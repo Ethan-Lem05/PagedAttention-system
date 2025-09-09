@@ -17,10 +17,10 @@ def decode_step(cache: KVCacheManager, query: torch.Tensor, seq_len: int):
 
 if __name__ == "__main__":
     n_heads, head_dim = 2, 4
-    cache = KVCacheManager(cap=3)
+    cache = KVCacheManager(cap=5, page_size=10)
 
     # Append 6 tokens
-    for i in range(6):
+    for i in range(400):
         k = torch.randn(n_heads, head_dim)
         v = torch.randn(n_heads, head_dim)
         cache.append_KV_pair(i, k, v)
@@ -29,6 +29,6 @@ if __name__ == "__main__":
     q_t = torch.randn(1, n_heads, head_dim)
 
     # Decode
-    out = decode_step(cache, q_t, seq_len=6)
+    out = decode_step(cache, q_t, seq_len=400)
     print("Attention output:", out)
     print(cache.evictions)
